@@ -1,22 +1,18 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext, Application
 
-from .models import Trips, Trip, Person, IOU, Receipt, Log, Logs, State, States
-from .utils import get_config
+from models import Trips, Trip, Person, Receipt, Logs, State, States
+from utils import get_config
 from pymongo import MongoClient
 from bson import ObjectId
 from typing import List, Optional
-import json
-import re
 
-db_details = get_config("mongodbDetails")
-db = MongoClient(f"mongodb://{db_details['hostname']}:{db_details['port']}")['blitz']
+db = MongoClient(f"mongodb://{get_config('mongoDbHostname')}:{get_config('mongoDbPort')}")['blitz']
 TRIPS = Trips(database=db)
 LOGS = Logs(database=db)
 STATES = States(database=db)
 
-blitz_config = get_config('blitz')
-TOKEN = blitz_config['token']
+TOKEN = get_config('token')
 app = (
     Application.builder()
     .updater(None)

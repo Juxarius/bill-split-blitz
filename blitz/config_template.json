@@ -1,0 +1,9 @@
+{
+    "token": "",
+    "endpoint": "/",
+    "ip": "ip:port",
+    "port": 6000,
+    "mongoDbHostname": "myMongoDb",
+    "mongoDbPort": 27017,
+    "certfile": "/etc/nginx/ssl/cert.pem"
+}

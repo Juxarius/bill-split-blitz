@@ -1,19 +1,17 @@
-from telegram import Update, Message, InlineKeyboardMarkup, InlineKeyboardButton
-from telegram.ext import Application, CommandHandler, MessageHandler, PollAnswerHandler, CallbackQueryHandler, CallbackContext, filters
+from telegram import Update
+from telegram.ext import CommandHandler, MessageHandler, PollAnswerHandler, CallbackQueryHandler, CallbackContext, filters
 from telegram.ext._contexttypes import ContextTypes
 from fastapi import Request, Response
-from .utils import get_config
-
-from . import controllers
-from . import nlp
 import json
+
+from utils import get_config
+import controllers
+import nlp
 
 DEBUG_MODE = True
 
-blitz_config = get_config('blitz')
-webserver_config = get_config('webserver')
-endpoint = blitz_config['endpoint']
-webhook_url = f'https://{webserver_config["ip"]}:{webserver_config["port"]}{blitz_config["endpoint"]}'
+endpoint = get_config('endpoint')
+webhook_url = f'https://{get_config("ip")}{endpoint}'
 bot = controllers.app
 
 async def command_start(update: Update, _: ContextTypes.DEFAULT_TYPE):
@@ -158,7 +156,7 @@ async def setup():
         bot.add_handler(PollAnswerHandler(func))
 
     bot.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
-    with open(webserver_config['certfile']) as certfile:
+    with open(get_config('certfile')) as certfile:
         await bot.bot.setWebhook(webhook_url, certificate=certfile)
 
 async def process_request(request: Request):
