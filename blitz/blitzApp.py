@@ -36,6 +36,7 @@ async def command_help(update: Update, context: CallbackContext):
     help_lines = [
         'For commands, you will need to follow the syntax strictly for it to work',
         '/trip TRIP_NAME - Start a new trip!',
+        '/alltrips - Shows you all the trips that you have logged with me!',
         '/bill AMOUNT DESC - Record a receipt that you paid for, I will later ask who you paid for',
         '/settle - Get the final amout everyone owes each other',
         '/receipts - Shows all receipts and breakdown',
@@ -98,6 +99,9 @@ async def command_show_trip(update: Update, context: CallbackContext):
 async def command_explain(update: Update, context: CallbackContext):
     await controllers.explain(update, context)
 
+async def command_all_my_trips(update: Update, context: CallbackContext):
+    await controllers.all_my_trips(update, context)
+
 async def callback_trip_join(update: Update, context: CallbackContext):
     await controllers.join_trip(update, context)
 
@@ -113,6 +117,7 @@ command_map = {
     'explain': command_explain,
     'show': command_show_trip,
     'receipts': command_show_receipts,
+    'alltrips': command_all_my_trips,
     'help': command_help,
 }
 

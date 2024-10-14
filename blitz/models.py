@@ -66,6 +66,7 @@ class Receipt(BaseModel):
 
 class Trip(BaseModel):
     id: Optional[PydanticObjectId] = None
+    chat_name: str
     chat_id: int
     title: str
     created_by: Person
@@ -110,6 +111,9 @@ class Trip(BaseModel):
             f'Attendees:\n{attendees_str}',
         ]
         return '\n'.join(lines)
+    
+    def one_liner(self) -> str:
+        return f'{self.title} with {self.chat_name}\n{len(self.attendees)} people, {len(self.receipts)} receipts'
 
     def add_person(self, p: Person) -> bool:
         attendees = set(self.attendees)

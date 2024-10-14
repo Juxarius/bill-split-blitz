@@ -33,6 +33,7 @@ async def new_trip(update: Update, context: CallbackContext) -> None:
     initiator = Person(user_id=m.from_user.id, user_name=m.from_user.username)
     new_trip = Trip(
         chat_id=m.chat.id,
+        chat_name=(m.chat.title or m.chat.first_name),
         title=context.user_data.get('trip_name'),
         created_by=initiator,
         attendees=[initiator],
@@ -102,6 +103,15 @@ async def change_trip(update: Update, context: CallbackContext) -> None:
             ])
         )
         return
+    
+async def all_my_trips(update: Update, context: CallbackContext) -> None:
+    if update.message.chat.type != 'private':
+        await update.message.reply_text('This command can only be used in my DMs, slide on in~')
+        return
+    user_id = update.message.from_user.id
+    found_trips = TRIPS.find_by({"attendees.user_id": user_id})
+    msg = "These are all the trips you have logged with me!\n" + '\n\n'.join(trip.one_liner() for trip in found_trips)
+    await update.message.chat.send_message(msg)
 
 async def new_receipt(update: Update, context: CallbackContext) -> None:
     m = update.message
