@@ -66,7 +66,7 @@ class Receipt(BaseModel):
 
 class Trip(BaseModel):
     id: Optional[PydanticObjectId] = None
-    chat_name: str
+    chat_name: str = ""
     chat_id: int
     title: str
     created_by: Person
