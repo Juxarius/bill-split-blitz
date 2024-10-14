@@ -22,7 +22,7 @@ async def command_start(update: Update, _: ContextTypes.DEFAULT_TYPE):
         '',
         'You can type /help to see my commands!',
         '',
-        'Recently, I have been trying to pick up human speech as well so you can try to invoke my functionalities'
+        'Recently, I have been trying to pick up human speech as well so you can try to invoke my functionalities '
         'with a \'Hey Blitz\' and simple sentences.',
         'Kinda like \'Hey Siri\', if you dont call my name, I cant reply you.',
         '(づ ◕‿◕ )づ Do be patient with me if I dont understand you.',
@@ -63,7 +63,7 @@ async def command_trip(update: Update, context: CallbackContext):
     if len(split_msg) < 2:
         await update.message.reply_text(f'Did you miss out the name of your trip?\n/trip TRIP_NAME')
         return
-    context.user_data['trip_name'] = ''.join(split_msg[1:])
+    context.user_data['trip_name'] = ' '.join(split_msg[1:])
     await controllers.new_trip(update, context)
 
 async def command_bill(update: Update, context: CallbackContext):
