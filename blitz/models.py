@@ -12,6 +12,9 @@ class Person(BaseModel):
     
     def __repr__(self) -> str:
         return self.user_name
+    
+    def __eq__(self, other: Self) -> bool:
+        return self.user_id == other.user_id
 
 class IOU(BaseModel):
     paid_by: Person
