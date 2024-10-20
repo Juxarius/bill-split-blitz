@@ -97,8 +97,7 @@ class Trip(BaseModel):
             else:
                 settled_ious.append(iou)
         # Remove anything less than 1 cent
-        return sorted([iou for iou in settled_ious if abs(iou.amount) > 0.01 and iou.paid_by != iou.paid_for],
-                      key=lambda iou: iou.paid_for.user_name)
+        return [iou for iou in settled_ious if abs(iou.amount) > 0.01 and iou.paid_by != iou.paid_for]
 
     def describe_settle(self) -> str:
         ious = self.settle()
@@ -106,11 +105,12 @@ class Trip(BaseModel):
             f'🎉 {self.title} 🎉\n',
             f'Receipts: {len(self.receipts)}\n',
         ]
-        curr_oweing = ious[0].paid_by
+        ious.sort(key=lambda iou: iou.paid_for.user_name)
+        curr_oweing = ious[0].paid_for
         for iou in ious:
-            if iou.paid_by != curr_oweing:
+            if iou.paid_for != curr_oweing:
                 lines.append('')
-                curr_oweing = iou.paid_by
+                curr_oweing = iou.paid_for
             lines.append(iou.describe())
         return '\n'.join(lines)
 
