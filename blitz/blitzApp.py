@@ -41,7 +41,9 @@ async def command_help(update: Update, context: CallbackContext):
         '/settle - Get the final amout everyone owes each other',
         '/receipts - Shows all receipts and breakdown',
         '/show - Shows the currnet trip you are on, you can reselect older trips',
-        '/intro - Tell you more about myself!'
+        '/intro - Tell you more about myself!',
+        '/divide RATE - Divide all expenses in this trip by a certain amount, for currency conversion',
+        '/multiply RATE - Multiple all expenses in this trip by a certain amount, for currency conversion',
     ]
     await update.message.chat.send_message('\n'.join(help_lines))
 
@@ -84,6 +86,30 @@ async def command_bill(update: Update, context: CallbackContext):
     })
     await controllers.new_receipt(update, context)
 
+async def command_divide(update: Update, context: CallbackContext):
+    split_msg = update.message.text.split()
+    if len(split_msg) < 2:
+        await update.message.reply_text(f'You need to put the factor to divide by, in this format:\n/divide RATE')
+        return
+    try:
+        context.user_data['rate'] = 1 / float(split_msg[1])
+    except ValueError as e:
+        await update.message.reply_text(f'I cant translate {split_msg[1]} to a number!')
+        return
+    await controllers.multiply(update, context)
+
+async def command_multiply(update: Update, context: CallbackContext):
+    split_msg = update.message.text.split()
+    if len(split_msg) < 2:
+        await update.message.reply_text(f'You need to put the factor to multiply by, in this format:\n/multiply RATE')
+        return
+    try:
+        context.user_data['rate'] = float(split_msg[1])
+    except ValueError as e:
+        await update.message.reply_text(f'I cant translate {split_msg[1]} to a number!')
+        return
+    await controllers.multiply(update, context)
+
 async def poll_complete_bill(update: Update, context: CallbackContext):
     await controllers.complete_receipt(update, context)
 
@@ -119,6 +145,8 @@ command_map = {
     'receipts': command_show_receipts,
     'alltrips': command_all_my_trips,
     'help': command_help,
+    'divide': command_divide,
+    'multiply': command_multiply,
 }
 
 callback_map = {

@@ -63,6 +63,9 @@ class Receipt(BaseModel):
             f'{self.paid_by.user_name} paid for {paid_for_str}'
         ]
         return '\n'.join(lines)
+    
+    def multiply(self, amount: float) -> None:
+        self.amount *= amount
 
 class Trip(BaseModel):
     id: Optional[PydanticObjectId] = None

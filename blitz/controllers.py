@@ -183,6 +183,13 @@ async def show_receipts(update: Update, context: CallbackContext):
     trip = get_last_trip(update.message.chat.id)
     await update.message.chat.send_message(trip.show_receipts())
 
+async def multiply(update: Update, context: CallbackContext):
+    trip = get_last_trip(update.message.chat.id)
+    for receipt in trip.receipts:
+        receipt.multiply(context.user_data['rate'])
+    TRIPS.save(trip)
+    await update.message.chat.send_message(f'Successfully multiplied all receipts by {context.user_data["rate"]:.4}\n' + trip.show_receipts())
+
 async def explain(update: Update, context: CallbackContext):
     pass
 
