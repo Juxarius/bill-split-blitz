@@ -1,6 +1,6 @@
 from pydantic_mongo import AbstractRepository, PydanticObjectId
 from pydantic import BaseModel, Field
-from typing import Optional, List, Self, Set
+from typing import Optional, List
 from datetime import datetime, timedelta
 
 class Person(BaseModel):
@@ -13,7 +13,7 @@ class Person(BaseModel):
     def __repr__(self) -> str:
         return self.user_name
     
-    def __eq__(self, other: Self) -> bool:
+    def __eq__(self, other) -> bool:
         return self.user_id == other.user_id
 
 class IOU(BaseModel):
@@ -22,7 +22,7 @@ class IOU(BaseModel):
     amount: float
     description: str
 
-    def compound(self, other: Self) -> bool:
+    def compound(self, other) -> bool:
         if (self.paid_for, self.paid_by) == (other.paid_by, other.paid_for):
             self.amount -= other.amount
             self.description += f', {other.description}'
