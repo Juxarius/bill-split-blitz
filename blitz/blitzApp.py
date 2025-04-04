@@ -190,7 +190,7 @@ async def setup():
 
     bot.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
     with open(get_config('certfile')) as certfile:
-        await bot.bot.setWebhook(webhook_url, certificate=certfile)
+        await bot.bot.setWebhook(webhook_url)
 
 async def process_request(request: Request):
     req = await request.json()
