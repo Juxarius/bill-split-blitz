@@ -27,7 +27,7 @@ async def lifespan(_: FastAPI):
 # Initialize FastAPI app (similar to Flask)
 webserver = FastAPI(lifespan=lifespan)
 
-@webserver.get('/test')
+@webserver.get('/webhook/test')
 async def test_webapp(request: Request) -> Response:
     # Test with below urls
     # https://localhost:80/test
