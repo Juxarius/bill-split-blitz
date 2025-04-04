@@ -40,7 +40,7 @@ for app in APPS:
 
 if __name__ == '__main__':
     uvicorn.run(
-        "webhookApp:webserver",
-        host='127.0.0.1',
+        "main:webserver",
+        host='0.0.0.0',
         port=get_config("port"),
     )
